@@ -1,0 +1,139 @@
+<div class="loading" *ngIf="TableData.loading" [@ngIfAnimate]>
+	<nz-spin [nzSize]="'large'" nzTip='加载中'>
+	</nz-spin>
+</div>
+
+<div class="tableWrap">
+	<div class="scrollWrap">
+		<nz-table
+			#TableDatas
+			nzShowSizeChanger nzShowQuickJumper nzShowTotal
+			[nzData]="TableData.data"
+			(nzPageIndexChange)='pageChange("page" , $event)'
+			(nzPageSizeChange)='pageChange("size" , $event)'
+			[nzLoading]='TableData.loading'
+			[nzPageIndex]='TableData.page'
+			[nzFrontPagination]='false'
+			[nzTotal]="TableData.total"
+		>
+			<thead>
+			<tr>
+				<th *ngIf="TableData.showIndex">
+					序号
+				</th>
+				<th *ngFor='let item of TableData.columns'>
+					{{ item.title }}
+				</th>
+				<th *ngIf='TableData.btn && TableData.btn.title' style="width:150px">
+					{{ TableData.btn.title }}
+				</th>
+			</tr>
+			</thead>
+
+			<tbody class="tbody-component">
+			<tr *ngFor="let data of TableDatas.data ; let dataIndex = index ">
+				<td *ngIf="TableData.showIndex">
+				<span class="table_title">
+					序号 :
+				</span>
+					<span>
+					{{ dataIndex + 1 }}
+				</span>
+				</td>
+
+				<td *ngFor='let column of TableData.columns;let columnIndex = index'>
+					<!-- textType -->
+					<div *ngIf='column.type == "text"' class="tableSection">
+					<span class="table_title">
+						{{ column.title }} :
+					</span>
+						<div>
+						<span *ngIf='column.filter' (click)='column.fn && column.fn(data)'
+							  [ngStyle]="{'color' : column.color?column.color:'#333'}">
+							{{ column.filter(data) }}
+						</span>
+							<span *ngIf='!column.filter' (click)='column.fn && column.fn(data)'
+								  [ngStyle]="{'color' : column.color?column.color:'#333'}">
+							{{ data[column.reflect] ? data[column.reflect]: "未设置" }}
+						</span>
+						</div>
+					</div>
+
+					<div *ngIf='column.type == "mark" ' class="tableSection">
+					<span class="table_title">
+						{{ column.title }} :
+					</span>
+						<div>
+						<span *ngIf='!column.filter'>
+							<nz-tag [nzColor]="(column.color && column.color[data[column.reflect]])?column.color[data[column.reflect]]:'#108ee9'">
+								{{ data[column.reflect] }}
+							</nz-tag>
+						</span>
+							<span *ngIf='column.filter'>
+							<nz-tag [nzColor]="(column.color && column.color[data[column.reflect]])?column.color[data[column.reflect]]:'#108ee9'">
+								{{ column.filter(data) }}
+							</nz-tag>
+						</span>
+						</div>
+					</div>
+
+					<div *ngIf='column.type === "img" ' class="tableSection">
+					<span class="table_title">
+						{{ column.title }} :
+					</span>
+						<img *ngIf ='data[column.reflect]' [src]='data[column.reflect]' class="c-img-res" alt="" style='width: 54px; height:54px;'
+							 (click)='imgTrigger( column , data )'>
+					</div>
+
+					<div *ngIf='column.type === "switch" ' class="tableSection">
+					<span class="table_title">
+						{{ column.title }} :
+					</span>
+						<nz-switch
+								[ngModel]="column.filter(data)"
+								nzControl=true
+								nzCheckedChildren="开"
+								nzUnCheckedChildren="关"
+								(click)='column.fn && column.fn(data)'
+						>
+						</nz-switch>
+					</div>
+				</td>
+
+				<td *ngIf='TableData.btn && TableData.btn.title' class="operWrap" style="width:230px">
+					<div class="tableSection">
+						<div *ngFor='let btn of TableData.btn.items'>
+							<button
+									nz-button
+									nzType="primary"
+									(click)='btn.fn(data)' class="btnOper"
+									[ngClass]=" { 'del' : btn.type === 'del' , 'add' : btn.type === 'add' ,'edit' : btn.type === 'edit' , 'reset' : btn.type === 'reset'}"
+							>
+
+								{{ isStr(btn.title) ? btn.title : btn.title(data) }}
+							</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+			</tbody>
+		</nz-table>
+	</div>
+</div>
+
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+		  (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		预览
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-center">
+			<img [src]="imgSrc" alt="">
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+	</ng-template>
+</nz-modal>

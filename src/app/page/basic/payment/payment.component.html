@@ -1,0 +1,185 @@
+<page-header [title]="'结账储值方式设置'">
+</page-header>
+<div class="c-container">
+	<button nz-button nzType="primary" class="c-button" (click)="add()">
+		新增
+	</button>
+	<common-table [TableData]="tableData">
+	</common-table>
+</div>
+
+<!-- model -->
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+		  (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		确认停用?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				一旦删除 , 该数据将不可恢复
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+		<button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+	</ng-template>
+</nz-modal>
+
+<!-- form -->
+<nz-modal [(nzVisible)]="infoBoxShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+		  (nzOnCancel)="infoBoxShow = false">
+	<ng-template #modalTitle>
+        <span *ngIf='!editMark'>
+          新增
+        </span>
+		<span *ngIf='editMark'>
+		  编辑
+		</span>
+	</ng-template>
+
+	<ng-template #modalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="name">
+					名称
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="name" id="name" placeholder="请输入名称">
+					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
+					<span>
+						名称不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="isCheckout">
+					属于结账
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择是否属于结账方式' formControlName="isCheckout" id="isCheckout">
+						<nz-option nzLabel="是" nzValue="1"></nz-option>
+						<nz-option nzLabel="否" nzValue="0"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('isCheckout').dirty && form.get('isCheckout').errors">
+					  <span>
+						  请选择是否属于结账方式
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="isCancel">
+					属于销账
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择是否计属于销账方式' formControlName="isCancel" id="isCancel">
+						<nz-option nzLabel="是" nzValue="1"></nz-option>
+						<nz-option nzLabel="否" nzValue="0"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('isCancel').dirty && form.get('isCancel').errors">
+					  <span>
+						  请选择是否属于销账方式
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="isInvest">
+					属于充值
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择是否计属于充值方式' formControlName="isInvest" id="isInvest">
+						<nz-option nzLabel="属于" nzValue="1"></nz-option>
+						<nz-option nzLabel="不属于" nzValue="0"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('isInvest').dirty && form.get('isInvest').errors">
+					  <span>
+						  请选择是否属于充值方式
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="isTurnover">
+					计入营业
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择是否计计入营业统计' formControlName="isTurnover" id="isTurnover">
+						<nz-option nzLabel="计入" nzValue="1"></nz-option>
+						<nz-option nzLabel="不计入" nzValue="0"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('isTurnover').dirty && form.get('isTurnover').errors">
+					  <span>
+						  请选择是否计入营业统计
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="isIncome">
+					计入实收
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择是否计入实际收入统计' formControlName="isIncome" id="isIncome">
+						<nz-option nzLabel="计入" nzValue="1"></nz-option>
+						<nz-option nzLabel="不计入" nzValue="0"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('isIncome').dirty && form.get('isIncome').errors">
+					  <span>
+						  请选择是否计入实际收入统计
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="isDefault">
+					默认方式
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择是否是默认支付方式' formControlName="isDefault" id="isDefault">
+						<nz-option nzLabel="是" nzValue="1"></nz-option>
+						<nz-option nzLabel="否" nzValue="0"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('isDefault').dirty && form.get('isDefault').errors">
+					  <span>
+						  请选择是否默认支付方式
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzFor="remark">
+					备注
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
+				</nz-form-control>
+			</nz-form-item>
+		</form>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='makeNew($event)'>
+			确定
+		</button>
+		<button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='save($event)'>
+			保存
+		</button>
+		<button nz-button nzType="default" (click)='infoBoxShow = false'>
+			关闭
+		</button>
+	</ng-template>
+</nz-modal>

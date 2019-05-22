@@ -1,0 +1,79 @@
+.dataSection ,
+.dataBlock{
+  width: 48%;
+  margin: 0 1% 20px 1%;
+}
+.dataSection{
+  background: #fff;
+}
+.dataBlock{
+  width: 100%;
+}
+.title{
+  padding: 20px 10px;
+  font-weight: bolder;
+  font-size: 15px;
+  border-bottom: 1px solid #ccc;
+}
+.sectionBlock{
+  width: 23%;
+  margin-right: 2%;
+  height: 92px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.sectionBlock > img{
+  display: block;
+  width: 40px;
+  height: auto;
+}
+.blue{
+  background: #1890ff !important;
+  cursor: pointer;
+}
+.blue:hover{
+
+}
+.green{
+  background : #52c41a !important ;
+  cursor: pointer;
+}
+.orange{
+  background-color: #fa8c16 !important;
+  cursor: pointer;
+}
+.pink{
+  background: #eb2f96 !important;
+  cursor: pointer;
+}
+.sectionBlock_title{
+  display: flex;
+  width: 70%;
+  flex-direction: column ;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+.sectionBlock_title > span:nth-of-type(1){
+  color: #fff !important;
+  font-size: 26px !important;
+  margin-bottom: 10px;
+}
+.sectionBlock_title > span:nth-of-type(2){
+  color: #fff !important;
+}
+
+@media screen and (max-width: 960px) {
+  .sectionBlock{
+    width: 100% ;
+  }
+  .dataSection{
+    width: 100%;
+    margin: 0 0 10px 0 ;
+  }
+}

@@ -1,0 +1,75 @@
+<div class="alain-default__aside-inner">
+  <!--<nz-dropdown nzTrigger="click" class="alain-default__aside-user">-->
+    <!--<div nz-dropdown class="user-block-dropdown">-->
+      <!--<nz-avatar class="alain-default__aside-user-avatar" [nzSrc]="settings.user.avatar"></nz-avatar>-->
+      <!--<div class="alain-default__aside-user-info">-->
+        <!--<strong>{{settings.user.name}}</strong>-->
+        <!--<p class="text-truncate mb0">  </p>-->
+        <!--&lt;!&ndash;{{settings.user.email}}&ndash;&gt;-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<ul nz-menu>-->
+      <!--<li nz-menu-item routerLink="/pro/account/center">个人中心</li>-->
+      <!--<li nz-menu-item routerLink="/pro/account/settings">个人设置</li>-->
+    <!--</ul>-->
+  <!--</nz-dropdown>-->
+  <sidebar-nav class="d-block py-lg"></sidebar-nav>
+  <!--<ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" class="sideMenu">-->
+    <!--<div *ngFor = 'let items of menu'>-->
+      <!--<li-->
+        <!--nz-menu-item-->
+        <!--*ngIf = 'items.children.length === 0'-->
+        <!--(click) = 'urlLink(items)'-->
+      <!--&gt;-->
+			<!--<span title>-->
+          <!--<i class="anticon anticon-appstore"></i>-->
+				<!--<span>{{ items.menuDescriptions[0].description }}</span>-->
+			<!--</span>-->
+      <!--</li>-->
+
+      <!--<li-->
+        <!--nz-submenu-->
+        <!--*ngIf = 'items.children.length > 0'-->
+      <!--&gt;-->
+			<!--<span title>-->
+          <!--<i class="anticon anticon-appstore"></i>-->
+				<!--<span>{{items.menuDescriptions[0].description}}</span>-->
+			<!--</span>-->
+        <!--<ul >-->
+          <!--<div *ngFor = 'let item of items.children'>-->
+            <!--<li-->
+              <!--nz-menu-item-->
+              <!--(click) = 'urlLink(item)'-->
+              <!--*ngIf = 'item.children.length === 0'-->
+            <!--&gt;-->
+              <!--{{item.menuDescriptions[0].description}}-->
+            <!--</li>-->
+            <!--<li-->
+              <!--nz-submenu-->
+              <!--*ngIf = 'item.children.length > 0'-->
+              <!--style="padding: 0"-->
+            <!--&gt;-->
+						<!--<span title>-->
+              <!--<i class="anticon anticon-appstore"></i>-->
+							<!--<span>-->
+								<!--{{item.menuDescriptions[0].description}}-->
+							<!--</span>-->
+						<!--</span>-->
+              <!--<ul>-->
+                <!--<li-->
+                  <!--nz-menu-item-->
+                  <!--(click) = 'urlLink(item2)'-->
+                  <!--*ngFor = 'let item2 of item.children'-->
+                  <!--style="padding: 0"-->
+                <!--&gt;-->
+                  <!--<i class="anticon anticon-appstore"></i>-->
+                  <!--{{item2.menuDescriptions[0].description}}-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</li>-->
+          <!--</div>-->
+        <!--</ul>-->
+      <!--</li>-->
+    <!--</div>-->
+  <!--</ul>-->
+</div>

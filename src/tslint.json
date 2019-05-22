@@ -1,0 +1,34 @@
+{
+	"extends": "../tslint.json",
+	"rules": {
+		"directive-selector": [
+			true,
+			"attribute",
+			[
+				"app",
+				"passport",
+				"exception",
+				"layout",
+				"header"
+			],
+			"camelCase"
+		],
+		"component-selector": [
+			true,
+			"element",
+			[
+				"app",
+				"passport",
+				"exception",
+				"layout",
+				"header"
+			],
+			"kebab-case"
+		],
+		"only-arrow-functions" : false ,
+		"no-unused-expression" : false ,
+		"one-variable-per-declaration" : false ,
+		"variable-name": false ,
+		"no-string-literal": false
+	}
+}

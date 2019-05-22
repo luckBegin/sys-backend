@@ -1,0 +1,262 @@
+<page-header [title]="'类型设置'">
+</page-header>
+<div class="c-container">
+	<button nz-button nzType="primary" class="c-button" (click)="add()">
+		新增
+	</button>
+	<common-table [TableData]="tableData">
+	</common-table>
+</div>
+
+<!-- model -->
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+		  (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		确认停用?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				一旦删除 , 该数据将不可恢复
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+		<button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+	</ng-template>
+</nz-modal>
+
+<!-- form -->
+<nz-modal [(nzVisible)]="infoBoxShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+		  (nzOnCancel)="infoBoxShow = false">
+	<ng-template #modalTitle>
+        <span *ngIf='!editMark'>
+          新增
+        </span>
+		<span *ngIf='editMark'>
+		  编辑
+		</span>
+	</ng-template>
+
+	<ng-template #modalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="name">
+					会员类型
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="name" id="name" placeholder="请输入会员类型">
+					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
+					<span>
+						会员类型不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="prefix">
+					卡号前缀
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="prefix" id="prefix" placeholder="请输入卡号前缀">
+					<nz-form-explain *ngIf="form.get('prefix').dirty && form.get('prefix').errors">
+					<span>
+						卡号前缀不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="isTurnover">
+					计入营业
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择是否计入营业' formControlName="isTurnover" id="isTurnover">
+						<nz-option nzLabel="计入" nzValue="1"></nz-option>
+						<nz-option nzLabel="不计入" nzValue="0"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('isTurnover').dirty && form.get('isTurnover').errors">
+					  <span>
+						  请选择是否计入营业统计
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="discount">
+					折扣率
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="discount" id="discount" placeholder="请输入折扣率">
+					<nz-form-explain *ngIf="form.get('discount').dirty && form.get('discount').errors">
+					<span>
+						折扣率不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="investToIntegral">
+					充值积分率
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="investToIntegral" id="investToIntegral" placeholder="请输入充值送积分率">
+					<nz-form-explain *ngIf="form.get('investToIntegral').dirty && form.get('investToIntegral').errors">
+					<span>
+						充值送积分率不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="purchaseToIntegral">
+					消费积分率
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="purchaseToIntegral" id="purchaseToIntegral" placeholder="请输入消费送积分率">
+					<nz-form-explain *ngIf="form.get('purchaseToIntegral').dirty && form.get('purchaseToIntegral').errors">
+					<span>
+						消费送积分率不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="investToAccount">
+					充值到账率
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="investToAccount" id="investToAccount" placeholder="请输入充值到账率">
+					<nz-form-explain *ngIf="form.get('investToAccount').dirty && form.get('investToAccount').errors">
+					<span>
+						消费充值到账率不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="upgrade">
+					升级策略
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择升级策略' formControlName="upgrade" id="upgrade">
+						<nz-option nzLabel="充值金额" nzValue="0"></nz-option>
+						<nz-option nzLabel="消费积分" nzValue="1"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('upgrade').dirty && form.get('upgrade').errors">
+					  <span>
+						  请选择升级策略
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' *ngIf="form.get('upgrade').value == '0' " [@ngIfAnimate]>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="upgradeByPurchase">
+					累计金额升级
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="upgradeByPurchase" id="upgradeByPurchase" placeholder="请输入累计金额">
+					<nz-form-explain *ngIf="form.get('upgradeByPurchase').dirty && form.get('upgradeByPurchase').errors">
+					<span>
+						累计金额不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'  *ngIf="form.get('upgrade').value == '1' " [@ngIfAnimate]>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="upgradeByIntegral">
+					累计积分升级
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="upgradeByIntegral" id="upgradeByIntegral" placeholder="请输入累计积分升级">
+					<nz-form-explain *ngIf="form.get('upgradeByIntegral').dirty && form.get('upgradeByIntegral').errors">
+					<span>
+						累计积分升级不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="enabled">
+					是否启用
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择是否启用' formControlName="enabled" id="enabled">
+						<nz-option nzLabel="启用" nzValue="1"></nz-option>
+						<nz-option nzLabel="不启用" nzValue="0"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('enabled').dirty && form.get('enabled').errors">
+					  <span>
+						  请选择是否启用
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6"  nzFor="nextLevel">
+					下一等级
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择下一等级' formControlName="nextLevel" id="nextLevel">
+						<nz-option *ngFor="let item of Enum_Type" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('nextLevel').dirty && form.get('nextLevel').errors">
+					  <span>
+						  请选择下一等级
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="cover">
+					卡面图
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<input nz-input formControlName="cover" id="cover" placeholder="请输入卡面图地址">
+					<nz-form-explain *ngIf="form.get('cover').dirty && form.get('cover').errors">
+					<span>
+						卡面图地址不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzFor="remark">
+					备注
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
+				</nz-form-control>
+			</nz-form-item>
+		</form>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='makeNew($event)'>
+			确定
+		</button>
+		<button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='save($event)'>
+			保存
+		</button>
+		<button nz-button nzType="default" (click)='infoBoxShow = false'>
+			关闭
+		</button>
+	</ng-template>
+</nz-modal>

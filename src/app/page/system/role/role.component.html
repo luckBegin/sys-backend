@@ -1,0 +1,93 @@
+<page-header [title]="'角色管理'">
+</page-header>
+<div class="c-container">
+	<button nz-button nzType="primary" class="c-button" (click)='addNewRole() '>
+		新增
+	</button>
+	<common-table [TableData]="tableData">
+	</common-table>
+</div>
+
+<!-- model -->
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+          (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		确认删除?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				一旦删除 , 该数据不可恢复
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+		<button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+	</ng-template>
+</nz-modal>
+
+<!-- form -->
+<nz-modal [(nzVisible)]="infoBoxShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+          (nzOnCancel)="infoBoxShow = false">
+	<ng-template #modalTitle>
+		<span *ngIf='!editMark'>
+			新增
+		</span>
+		<span *ngIf='editMark'>
+			编辑
+		</span>
+	</ng-template>
+
+	<ng-template #modalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="name">
+					角色名
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="name" id="name" placeholder="请输入角色名">
+					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
+					<span>
+						角色名不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzFor="remark">
+				备注
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
+				</nz-form-control>
+			</nz-form-item>
+		</form>
+
+		<nz-tree
+		  [nzData]="menuTree"
+		  [nzMultiple] = 'true'
+		  [nzSelectedKeys] = "selectRoles"
+		  [nzCheckable]="false"
+		  [nzDefaultExpandAll] = 'true'
+		  #treeCom
+		>
+		</nz-tree>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='makeNew($event)'>
+			确定
+		</button>
+		<button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='save($event)'>
+			保存
+		</button>
+		<button nz-button nzType="default" (click)='infoBoxShow = false'>
+			关闭
+		</button>
+	</ng-template>
+</nz-modal>

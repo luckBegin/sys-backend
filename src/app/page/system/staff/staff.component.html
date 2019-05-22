@@ -1,0 +1,271 @@
+<page-header [title]="'管理员列表'" >
+</page-header>
+
+<div class="c-container">
+	<div style="padding-top: 20px; margin-bottom: 20px;">
+		<div style="margin-bottom: 20px">
+			<common-search-bar [SearchBarData] = 'searchBarData'>
+			</common-search-bar>
+		</div>
+
+		<button
+		  nz-button
+		  nzType="primary"
+		  class="c-button"
+		  (click)="add()"
+		>
+			新增
+		</button>
+
+		<common-table [TableData]="tableData">
+		</common-table>
+	</div>
+</div>
+
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+          (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		确认冻结?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				一旦冻结 , 该账号不可再登录
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+		<button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+	</ng-template>
+
+</nz-modal>
+
+<nz-modal [(nzVisible)]="formShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+          (nzOnCancel)="formShow = false">
+	<ng-template #modalTitle>
+		<span *ngIf='!editMark'>
+			添加
+		</span>
+		<span *ngIf='editMark'>
+			编辑
+		</span>
+	</ng-template>
+
+	<ng-template #modalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="s_user_name">
+					用户名
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="username" id="username" placeholder="请输入用户名">
+					<nz-form-explain *ngIf="form.get('username').dirty && form.get('username').errors">
+						<span>
+							用户名不能为空
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' *ngIf="!editMark">
+				<nz-form-label [nzSm]="5" nzRequired nzFor="password">
+					密码
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="password" id="password" placeholder="请输入密码">
+					<nz-form-explain *ngIf="form.get('password').dirty && form.get('password').errors">
+						<span>
+							密码不能为空
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="name">
+					姓名
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="name" id="name" placeholder="请输入真实姓名">
+					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
+						<span>
+							真实姓名不能为空
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzFor="phoneNumber">
+					手机号
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="phoneNumber" id="phoneNumber" placeholder="请输入手机号">
+					<nz-form-explain *ngIf="form.get('phoneNumber').dirty && form.get('phoneNumber').errors">
+						<span>
+							手机号不能为空
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzFor="remark">
+					备注
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' *ngIf='roles'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="roleIds">
+					角色
+				</nz-form-label>
+				<nz-form-control [nzSm]="18"  [nzOffset]='1'>
+					<nz-select  nzMode = 'tags' nzShowSearch nzAllowClear nzPlaceHolder='请选择所属角色' formControlName="roleIds" id="roleIds">
+						<nz-option
+							*ngFor = 'let item of roles;'
+							[nzValue]="item.value"
+							[nzLabel]="item.key"
+						>
+						</nz-option>
+					</nz-select>
+
+					<nz-form-explain *ngIf="form.get('roleIds').dirty && form.get('roleIds').errors">
+						<span>
+							所属角色不能为空
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' *ngIf='ENUM_Shops'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="shopId">
+					所属店
+				</nz-form-label>
+				<nz-form-control [nzSm]="18"  [nzOffset]='1'>
+					<nz-select  nzMode = 'tags' nzShowSearch nzAllowClear nzPlaceHolder='请选择所属店' formControlName="shopId" id="shopId">
+						<nz-option
+								*ngFor = 'let item of ENUM_Shops;'
+								[nzValue]="item.value"
+								[nzLabel]="item.key"
+						>
+						</nz-option>
+					</nz-select>
+
+					<nz-form-explain *ngIf="form.get('shopId').dirty && form.get('shopId').errors">
+						<span>
+							所属店不能为空
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<div class="c-required" style="color: #262626;margin-bottom: 10px">
+				请选择部门 :
+			</div>
+			<nz-tree
+				[nzData]="departs"
+				[nzDefaultExpandAll]="true"
+				[nzMultiple] = 'true'
+				[nzCheckable]="false"
+				[nzSelectedKeys]="selectDepart"
+				#treeCom
+			>
+			</nz-tree>
+		</form>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='makeNew($event)'>
+			确定
+		</button>
+		<button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='save($event)'>
+			保存
+		</button>
+		<button nz-button nzType="default" (click)='formShow = false'>
+			关闭
+		</button>
+	</ng-template>
+</nz-modal>
+
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+		  (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		确认删除?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				一旦删除 , 该数据不可恢复
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+		<button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+	</ng-template>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="passFormShow" [nzTitle]="PassmodalTitle" [nzContent]="PassmodalContent" [nzFooter]="PassmodalFooter"
+		  (nzOnCancel)="passFormShow = false">
+	<ng-template #PassmodalTitle>
+		<span *ngIf='!editMark'>
+			添加
+		</span>
+		<span *ngIf='editMark'>
+			编辑
+		</span>
+	</ng-template>
+
+	<ng-template #PassmodalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="passForm">
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="s_user_name">
+					密码
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="password" id="password2" placeholder="请输入用户名">
+					<nz-form-explain *ngIf="passForm.get('password').dirty && passForm.get('password').errors">
+						<span>
+							用户名不能为空
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="passwordAgain">
+					再次输入
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input nz-input formControlName="passwordAgain" id="passwordAgain" placeholder="请输入密码">
+					<nz-form-explain *ngIf=" passForm.get('passwordAgain').dirty && passForm.get('passwordAgain').errors
+						&& passForm.get('password').value === passForm.get('passwordAgain').value">
+						<span>
+							两次输入的密码不一致
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+		</form>
+	</ng-template>
+
+	<ng-template #PassmodalFooter>
+		<button nz-button nzType="primary" [disabled]="!passForm.valid
+			|| passForm.get('password').value !== passForm.get('passwordAgain').value" (click)='changePass( $event )'>
+			确定
+		</button>
+		<button nz-button nzType="default" (click)='passFormShow = false'>
+			关闭
+		</button>
+	</ng-template>
+</nz-modal>

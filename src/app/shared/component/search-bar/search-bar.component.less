@@ -1,0 +1,85 @@
+.search-bar-wrap{
+  background: #fff;
+  padding: 20px 15px 25px 20px;
+  border-radius: 5px;
+  -moz-box-shadow:0px 0px 4px #a7a7a7; -webkit-box-shadow:0px 0px 4px #a7a7a7; box-shadow:0px 0px 4px #a7a7a7;
+}
+.border-dashed{
+  border-bottom: 1px dashed rgba(204, 204, 204, 0.47);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+.btnWrap{
+  width: 100%;
+}
+.btnWrap button{
+  margin-right: 10px;
+}
+
+.searchSection{
+  position: relative;
+}
+
+.searchTitle ,
+.classify_title{
+  margin-right: 10px;
+  color: #666;
+}
+.conditionWrap{
+  width: 100%;
+}
+.splitLine{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.conditionSection{
+  width:20% ;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  margin-right: 5% ;
+}
+
+.classify_tags{
+  flex: 1;
+}
+.classifyWrap{
+  width: 100% ;
+  padding-top: 20px;
+}
+.tags{
+  padding: 0 5px;
+  border: 1px solid #dedede;
+  border-radius: 3px;
+  transition: all .1s ease-in;
+  cursor: pointer;
+}
+
+.tags:hover{
+  background : #40a9ff ;
+  color : #fff
+}
+
+.tags_active{
+  background : #40a9ff ;
+  color : #fff
+}
+::ng-deep .alain-default__content nz-input-group {
+  width: 100%;
+}
+@media screen and (max-width: 960px){
+  .conditionSection{
+    width: 100% !important;
+  }
+  .splitLine{
+    display: none;
+  }
+  .dateTime{
+    margin-bottom: 10px;
+  }
+  .dateTimeTitle{
+    width: 100%;
+  }
+  ::ng-deep .ant-calendar-picker{
+    width: 100%;
+  }
+}

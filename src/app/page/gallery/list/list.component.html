@@ -1,0 +1,171 @@
+<page-header [title]="'列表管理'">
+</page-header>
+<div class="c-container">
+	<div style="margin-bottom: 20px">
+		<common-search-bar [SearchBarData] = 'searchBarData'>
+		</common-search-bar>
+	</div>
+	<button nz-button nzType="primary" class="c-button" (click)="add()">
+		新增
+	</button>
+	<common-table [TableData]="tableData">
+	</common-table>
+</div>
+
+<!-- model -->
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+		  (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		确认删除?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				删除将会连同图片一起删除 , 并且数据不可恢复
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+		<button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+	</ng-template>
+</nz-modal>
+
+<!-- form -->
+
+<nz-modal [(nzVisible)]="infoBoxShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+		  (nzOnCancel)="infoBoxShow = false">
+	<ng-template #modalTitle>
+        <span *ngIf='!editMark'>
+          新增
+        </span>
+		<span *ngIf='editMark'>
+		  编辑
+		</span>
+	</ng-template>
+
+	<ng-template #modalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="name">
+					图片名称
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="name" id="name" placeholder="请输入名称">
+					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
+					<span>
+						图片名称不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' *ngIf="!editMark">
+				<nz-form-label [nzSm]="6" nzRequired>
+					图片
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input type="file" nz-input id="image" placeholder="请选择图片">
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' *ngIf = 'ENUM_shopList'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="shopId">
+					店铺
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择所属店铺' formControlName="shopId" id="shopId">
+						<nz-option
+								*ngFor = 'let item of ENUM_shopList;'
+								[nzValue]="item.value"
+								[nzLabel]="item.key"
+						>
+						</nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('shopId').dirty && form.get('shopId').errors">
+					  <span>
+						  所属店铺不能为空
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' *ngIf = 'ENUM_typeList'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="typeId">
+					类型
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择所属类型' formControlName="typeId" id="typeId">
+						<nz-option
+								*ngFor = 'let item of ENUM_typeList;'
+								[nzValue]="item.value"
+								[nzLabel]="item.key"
+						>
+						</nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('typeId').dirty && form.get('typeId').errors">
+					  <span>
+						  类型不能为空
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzFor="link">
+					跳转链接
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="link" id="link" placeholder="请输入跳转链接">
+					<nz-form-explain *ngIf="form.get('link').dirty && form.get('link').errors">
+					<span>
+						跳转链接不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzFor="remark">
+					备注
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
+				</nz-form-control>
+			</nz-form-item>
+
+		</form>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='makeNew($event)'>
+			确定
+		</button>
+		<button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='save($event)'>
+			保存
+		</button>
+		<button nz-button nzType="default" (click)='infoBoxShow = false'>
+			关闭
+		</button>
+	</ng-template>
+</nz-modal>
+
+<nz-modal [nzVisible]="imgShow" [nzTitle]="imgShowTitle" [nzContent]="imgShowContent" [nzFooter]="imgShowFooter"
+		  (nzOnCancel)="imgShow = false">
+	<ng-template #imgShowTitle>
+		查看图片
+	</ng-template>
+
+	<ng-template #imgShowContent>
+		<div class="c-flex-row-start">
+			<img [src]="imgSrc" alt="" class="c-img-res" *ngIf="imgSrc">
+		</div>
+	</ng-template>
+
+	<ng-template #imgShowFooter>
+		<button nz-button nzType="default" (click)="imgShow = false">确定</button>
+	</ng-template>
+</nz-modal>

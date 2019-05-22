@@ -1,0 +1,219 @@
+<page-header [title]="'区域设置'">
+</page-header>
+<div class="c-container">
+	<div style="margin-bottom: 20px">
+		<common-search-bar [SearchBarData] = 'searchBarData'>
+		</common-search-bar>
+	</div>
+
+	<button nz-button nzType="primary" class="c-button" (click)="add()">
+		新增
+	</button>
+	<common-table [TableData]="tableData">
+	</common-table>
+</div>
+
+<!-- model -->
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+		  (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		确认删除?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				一旦删除 , 该数据不可恢复
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+		<button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+	</ng-template>
+</nz-modal>
+
+<!-- form -->
+
+<nz-modal [(nzVisible)]="infoBoxShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+		  (nzOnCancel)="infoBoxShow = false">
+	<ng-template #modalTitle>
+        <span *ngIf='!editMark'>
+          新增
+        </span>
+		<span *ngIf='editMark'>
+		  编辑
+		</span>
+	</ng-template>
+
+	<ng-template #modalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+			<nz-form-item class='c-formSec' >
+				<nz-form-label [nzSm]="6" nzRequired nzFor="roomTypeId">
+					房台类型
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择房台类型' formControlName="roomTypeId" id="roomTypeId">
+						<nz-option *ngFor="let item of ENUM_Type" [nzValue]="item.value" [nzLabel]="item.key"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('roomTypeId').dirty && form.get('roomTypeId').errors">
+					  <span>
+						  请选择房台类型
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' >
+				<nz-form-label [nzSm]="6" nzRequired nzFor="timeTypeId">
+					房台时段
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择房台时段' formControlName="timeTypeId" id="timeTypeId">
+						<nz-option *ngFor="let item of ENUM_Time" [nzValue]="item.value" [nzLabel]="item.key"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('timeTypeId').dirty && form.get('timeTypeId').errors">
+					  <span>
+						  请选择房台时段
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec' >
+				<nz-form-label [nzSm]="6" nzRequired nzFor="week">
+					星期
+				</nz-form-label>
+				<nz-form-control [nzSm]="17"  [nzOffset]='1'>
+					<nz-select nzMode="tags" nzPlaceHolder='请选择星期' formControlName="week" id="week">
+						<nz-option nzLabel="星期一" nzValue="星期一"></nz-option>
+						<nz-option nzLabel="星期二" nzValue="星期二"></nz-option>
+						<nz-option nzLabel="星期三" nzValue="星期三"></nz-option>
+						<nz-option nzLabel="星期四" nzValue="星期四"></nz-option>
+						<nz-option nzLabel="星期五" nzValue="星期五"></nz-option>
+						<nz-option nzLabel="星期六" nzValue="星期六"></nz-option>
+						<nz-option nzLabel="星期天" nzValue="星期天"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('week').dirty && form.get('week').errors">
+					  <span>
+						  请选择星期
+					  </span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzFor="remark">
+					备注
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
+				</nz-form-control>
+			</nz-form-item>
+
+			<div class="topHeader timePrice">
+				<nz-form-item class='c-formSec'>
+					<nz-form-label [nzSm]="6" nzRequired nzFor="timePrice">
+						价格
+					</nz-form-label>
+					<nz-form-control [nzSm]="17" [nzOffset]='1'>
+						<input nz-input formControlName="timePrice" id="timePrice" placeholder="请输入计时价格">
+						<nz-form-explain *ngIf="form.get('timePrice').dirty && form.get('timePrice').errors">
+					<span>
+						价格不能为空
+					</span>
+						</nz-form-explain>
+					</nz-form-control>
+				</nz-form-item>
+
+				<nz-form-item class='c-formSec'>
+					<nz-form-label [nzSm]="6" nzRequired nzFor="vipTimePrice">
+						会员价
+					</nz-form-label>
+					<nz-form-control [nzSm]="17" [nzOffset]='1'>
+						<input nz-input formControlName="vipTimePrice" id="vipTimePrice" placeholder="请输入计时会员价格">
+						<nz-form-explain *ngIf="form.get('vipTimePrice').dirty && form.get('vipTimePrice').errors">
+					<span>
+						计时会员价不能为空
+					</span>
+						</nz-form-explain>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+
+			<div class="topHeader outrightPrice">
+				<nz-form-item class='c-formSec'>
+					<nz-form-label [nzSm]="6" nzRequired nzFor="outrightPrice">
+						价格
+					</nz-form-label>
+					<nz-form-control [nzSm]="17" [nzOffset]='1'>
+						<input nz-input formControlName="outrightPrice" id="outrightPrice" placeholder="请输入买断价格">
+						<nz-form-explain *ngIf="form.get('outrightPrice').dirty && form.get('outrightPrice').errors">
+					<span>
+						价格不能为空
+					</span>
+						</nz-form-explain>
+					</nz-form-control>
+				</nz-form-item>
+
+				<nz-form-item class='c-formSec'>
+					<nz-form-label [nzSm]="6" nzRequired nzFor="vipOutrightPrice">
+						会员价
+					</nz-form-label>
+					<nz-form-control [nzSm]="17" [nzOffset]='1'>
+						<input nz-input formControlName="vipOutrightPrice" id="vipOutrightPrice" placeholder="请输入买断会员价">
+						<nz-form-explain *ngIf="form.get('vipOutrightPrice').dirty && form.get('vipOutrightPrice').errors">
+					<span>
+						买断会员价不能为空
+					</span>
+						</nz-form-explain>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+
+			<div class="topHeader advancePrice">
+				<nz-form-item class='c-formSec'>
+					<nz-form-label [nzSm]="6" nzRequired nzFor="advancePrice">
+						价格
+					</nz-form-label>
+					<nz-form-control [nzSm]="17" [nzOffset]='1'>
+						<input nz-input formControlName="advancePrice" id="advancePrice" placeholder="请输入预买价格">
+						<nz-form-explain *ngIf="form.get('advancePrice').dirty && form.get('advancePrice').errors">
+					<span>
+						预买价不能为空
+					</span>
+						</nz-form-explain>
+					</nz-form-control>
+				</nz-form-item>
+
+				<nz-form-item class='c-formSec'>
+					<nz-form-label [nzSm]="6" nzRequired nzFor="vipAdvancePrice">
+						会员价
+					</nz-form-label>
+					<nz-form-control [nzSm]="17" [nzOffset]='1'>
+						<input nz-input formControlName="vipAdvancePrice" id="vipAdvancePrice" placeholder="请输入预买会员价格">
+						<nz-form-explain *ngIf="form.get('vipAdvancePrice').dirty && form.get('vipAdvancePrice').errors">
+					<span>
+						预买会员价不能为空
+					</span>
+						</nz-form-explain>
+					</nz-form-control>
+				</nz-form-item>
+			</div>
+		</form>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='makeNew($event)'>
+			确定
+		</button>
+		<button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='save($event)'>
+			保存
+		</button>
+		<button nz-button nzType="default" (click)='infoBoxShow = false'>
+			关闭
+		</button>
+	</ng-template>
+</nz-modal>

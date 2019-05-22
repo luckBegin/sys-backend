@@ -1,0 +1,122 @@
+<div class="search-bar-wrap">
+	<!-- classify -->
+	<div *ngIf = 'SearchBarData.classify' class="border-dashed c-flex-row-start classifyWrap">
+		<div class="classify_title">
+			{{ SearchBarData.classify.name }} :
+		</div>
+		<div class="classify_tags c-flex-row-start">
+			<div class="tags" *ngFor="let item of SearchBarData.classify.data; let idx = index" >
+				{{ item.name }}
+			</div>
+		</div>
+	</div>
+  <!-- condition -->
+	<div class="border-dashed" *ngIf = 'SearchBarData.conditions'>
+		<div class="c-flex-row-start c-flex-auto-wrap conditionWrap">
+			<div *ngFor="let item of SearchBarData.conditions" class="conditionSection">
+				<!-- input -->
+				<div *ngIf="item.type === 'input'" class="c-flex-row-start">
+					<div class="searchTitle">
+						<span>
+							{{ item.name }}
+						</span>:
+					</div>
+					<div class="c-flex-row-start" style="flex:1">
+						<nz-input-group [nzSuffix]="suffixIconSearch">
+							<input type="text" nz-input [(ngModel)]="query[item.model]" [placeholder]="item.placeHolder" >
+						</nz-input-group>
+						<ng-template #suffixIconSearch>
+							<i nz-icon type="search"></i>
+						</ng-template>
+					</div>
+				</div>
+
+				<!-- number -->
+				<div *ngIf="item.type === 'number'" class="c-flex-row-start">
+					<div class="searchTitle">
+						<span>
+						{{ item.name }}
+						</span>:
+					</div>
+					<div class="c-flex-row-start" style="flex:1">
+						<nz-input-group [nzSuffix]="suffixIconSearch">
+							<input type="number" nz-input [(ngModel)]="query[item.model]" [placeholder]="item.placeHolder" >
+						</nz-input-group>
+						<ng-template #suffixIconSearch>
+							<i nz-icon type="search"></i>
+						</ng-template>
+					</div>
+				</div>
+
+				<!-- select -->
+				<div *ngIf="item.type === 'select'" class="c-flex-row-start">
+					<div class="searchTitle">
+						<span>
+							{{ item.name }}
+						</span>:
+					</div>
+					<div class="c-flex-row-start" style="flex:1">
+						<nz-select nzAllowClear style="width: 100%;" [(ngModel)]="query[item.model]" [nzPlaceHolder]="item.placeHolder" >
+							<nz-option [nzValue]="'null'" [nzLabel]="'全部'" ></nz-option>
+							<nz-option *ngFor="let ops of item.data " [nzValue]="ops.value" [nzLabel]="ops.key" ></nz-option>
+						</nz-select>
+					</div>
+				</div>
+
+				<!-- date -->
+				<div *ngIf="item.type === 'date'" class="c-flex-row-start">
+					<div class="searchTitle">
+						<span>
+							{{ item.name }}
+						</span>:
+					</div>
+					<div class="c-flex-row-start" style="flex:1">
+						<nz-date-picker nzAllowClear [(ngModel)]="query[item.model]" [nzPlaceHolder] = 'item.placeHolder'></nz-date-picker>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- dateTime -->
+	<div class="border-dashed" *ngIf = 'SearchBarData.sections'>
+		<div *ngFor="let item of SearchBarData.sections">
+			<div *ngIf = 'item.type === "dateRange"' class="c-flex-row-start">
+				<div class="searchSection c-flex-row-start c-flex-auto-wrap">
+					<div class="searchTitle dateTimeTitle">
+						<span>
+							{{ item.name }} :
+						</span>
+					</div>
+					<nz-date-picker nzAllowClear class="dateTime" [(ngModel)]="query[item.model.start]" [nzPlaceHolder] = 'item.placeHolders[0]'></nz-date-picker>
+					<div class="splitLine"> - </div>
+					<nz-date-picker nzAllowClear class="dateTime" [(ngModel)]="query[item.model.end]" [nzPlaceHolder] = 'item.placeHolders[1]' ></nz-date-picker>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- btn -->
+	<div>
+		<div class="btnWrap c-flex-row-start">
+
+			<button
+				nz-button
+				nzType="primary"
+				(click)="queryFn()"
+			>
+				<i class="anticon anticon-search"></i>
+				搜索
+			</button>
+
+			<button
+				nz-button
+				nzType="primary"
+				(click)="reset()"
+			>
+				<i class="anticon anticon-search"></i>
+				重置
+			</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,183 @@
+<page-header [title]="'店铺管理'">
+</page-header>
+<div class="c-container">
+	<div style="margin-bottom: 20px">
+		<common-search-bar [SearchBarData] = 'searchBarData'>
+		</common-search-bar>
+	</div>
+	<button nz-button nzType="primary" class="c-button" (click)="add()">
+		新增
+	</button>
+  <common-table [TableData]="tableData">
+  </common-table>
+</div>
+
+<!-- model -->
+
+<nz-modal [nzVisible]="isVisible" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+          (nzOnCancel)="isVisible = false">
+	<ng-template #refuseTitle>
+		确认删除?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				一旦删除 , 该数据不可恢复
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="isVisible = false">取消</button>
+		<button nz-button nzType="primary" (click)="modalConfirm($event)">确定</button>
+	</ng-template>
+</nz-modal>
+
+<!-- form -->
+
+<nz-modal [(nzVisible)]="infoBoxShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+          (nzOnCancel)="infoBoxShow = false">
+  <ng-template #modalTitle>
+        <span *ngIf='!editMark'>
+          新增
+        </span>
+		<span *ngIf='editMark'>
+		  编辑
+		</span>
+  </ng-template>
+
+  <ng-template #modalContent>
+	  <form nz-form [nzLayout]="'inline'" [formGroup]="form">
+		  <nz-form-item class='c-formSec'>
+			  <nz-form-label [nzSm]="6" nzRequired nzFor="name">
+				  店名
+			  </nz-form-label>
+			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
+				  <input nz-input formControlName="name" id="name" placeholder="请输入店名">
+				  <nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
+					<span>
+						店名不能为空
+					</span>
+				  </nz-form-explain>
+			  </nz-form-control>
+		  </nz-form-item>
+
+		  <nz-form-item class='c-formSec'>
+			  <nz-form-label [nzSm]="6" nzRequired nzFor="type">
+				  店铺类型
+			  </nz-form-label>
+			  <nz-form-control [nzSm]="17"  [nzOffset]='1'>
+				  <nz-select nzPlaceHolder='请选择店铺类型' formControlName="type" id="type">
+					  <nz-option
+							  *ngFor = 'let item of ENUM_shopType;'
+							  [nzValue]="item.value"
+							  [nzLabel]="item.key"
+					  >
+					  </nz-option>
+				  </nz-select>
+				  <nz-form-explain *ngIf="form.get('type').dirty && form.get('type').errors">
+					  <span>
+						  店铺类型不能为空
+					  </span>
+				  </nz-form-explain>
+			  </nz-form-control>
+		  </nz-form-item>
+
+		  <nz-form-item class='c-formSec'>
+			  <nz-form-label [nzSm]="6" nzRequired nzFor="address">
+				  店铺地址
+			  </nz-form-label>
+			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
+				  <input nz-input formControlName="address" id="address" placeholder="请输入店铺地址">
+				  <nz-form-explain *ngIf="form.get('address').dirty && form.get('address').errors">
+					<span>
+						店铺地址不能为空
+					</span>
+				  </nz-form-explain>
+			  </nz-form-control>
+		  </nz-form-item>
+
+		  <nz-form-item class='c-formSec'>
+			  <nz-form-label [nzSm]="6" nzRequired nzFor="tel">
+				  联系电话
+			  </nz-form-label>
+			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
+				  <input nz-input formControlName="tel" id="tel" placeholder="请输入联系电话">
+				  <nz-form-explain *ngIf="form.get('tel').dirty && form.get('tel').errors">
+					<span>
+						联系电话不能为空
+					</span>
+				  </nz-form-explain>
+			  </nz-form-control>
+		  </nz-form-item>
+
+		  <nz-form-item class='c-formSec'>
+			  <nz-form-label [nzSm]="6" nzRequired nzFor="tel">
+				  纬度
+			  </nz-form-label>
+			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
+				  <input nz-input formControlName="lat" id="lat" placeholder="请输入纬度">
+				  <nz-form-explain *ngIf="form.get('lat').dirty && form.get('lat').errors">
+					<span>
+						纬度不能为空
+					</span>
+				  </nz-form-explain>
+			  </nz-form-control>
+		  </nz-form-item>
+
+		  <nz-form-item class='c-formSec'>
+			  <nz-form-label [nzSm]="6" nzRequired nzFor="lng">
+				  经度
+			  </nz-form-label>
+			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
+				  <input nz-input formControlName="lng" id="lng" placeholder="请输入经度">
+				  <nz-form-explain *ngIf="form.get('lng').dirty && form.get('lng').errors">
+					<span>
+						经度不能为空
+					</span>
+				  </nz-form-explain>
+			  </nz-form-control>
+		  </nz-form-item>
+
+		  <nz-form-item class='c-formSec'>
+			  <nz-form-label [nzSm]="6" nzRequired nzFor="icon">
+				  LOGO
+			  </nz-form-label>
+			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
+				  <input nz-input formControlName="icon" id="icon" placeholder="请输入LOGO">
+				  <nz-form-explain *ngIf="form.get('icon').dirty && form.get('icon').errors">
+					<span>
+						LOGO不能为空
+					</span>
+				  </nz-form-explain>
+			  </nz-form-control>
+		  </nz-form-item>
+
+		  <!-- TODO add owner column -->
+
+		  <nz-form-item class='c-formSec'>
+			  <nz-form-label [nzSm]="6" nzFor="remark">
+				  备注
+			  </nz-form-label>
+			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
+				  <input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
+			  </nz-form-control>
+		  </nz-form-item>
+
+	  </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+	  <button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='makeNew($event)'>
+		  确定
+	  </button>
+	  <button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='save($event)'>
+		  保存
+	  </button>
+	  <button nz-button nzType="default" (click)='infoBoxShow = false'>
+		  关闭
+	  </button>
+  </ng-template>
+</nz-modal>
