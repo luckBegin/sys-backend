@@ -45,6 +45,8 @@ export class SidebarComponent implements OnInit{
 		this.menu = this.ss.get("menuInfo") ;
 		const _menu = [] ;
 		recusive(this.menu , _menu) ;
+		
+		console.log(_menu) ;
 		this.menuService.add(_menu);
 	};
 }
