@@ -133,7 +133,6 @@ export class ListComponent implements OnInit {
 		}
 	};
 
-
 	getShopList(): void{
 		this.shopSer.getAll()
 			.subscribe( ( res: RESPONSE ) => {
