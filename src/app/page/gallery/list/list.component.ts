@@ -7,7 +7,7 @@ import { QueryModel } from './query.model';
 import { Service } from '../../../../decorators/service.decorator';
 import { ListService, TypeService } from '../../../service/gallery';
 import { Before, CombineAll } from '../../../../decorators/function.decorator';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import { CmdService } from '../../../service/command/cmd.service';
 
 @Component({

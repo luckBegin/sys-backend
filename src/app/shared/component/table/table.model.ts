@@ -1,16 +1,21 @@
 interface column {
 	title: string;
-	reflect: any;
-	type: 'text | img | mark | switch';
+	reflect?: any;
+	type: 'text' | 'img' | 'mark' | 'switch';
 	fn?: any;
 	filter?: any;
+	preview?: boolean;
 }
-
-interface btnGroup {
+interface btnItem {
 	type?: 'edit' | 'add' | 'del'
 	title?: string;
-	fn?: Function
-};
+	fn?: Function ;
+	show?: ( data?: any)=> {}
+}
+interface btnGroup {
+	title?: string ,
+	items?: btnItem[]
+}
 
 export interface TableData {
 	columns?: column[];
@@ -21,5 +26,8 @@ export interface TableData {
 	page: number;
 	change?: Function;
 	total?: number;
-	preview: boolean;
+	hidePage?: boolean;
+	showCheckBox?: boolean ;
+	checkedRows?: number[] ;
+	checkedShow?: ( data?: any)=> {}
 }
