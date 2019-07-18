@@ -149,7 +149,7 @@ export class RoleComponent implements OnInit {
 		})
 	})
 	@CombineAll()
-	makeNew($event :Event, selectdRoles : string[] ): void {
+	makeNew($event :Event, selectdRoles?: string[] ): void {
 		const value = this.form.value ;
 		value['menuIds'] = selectdRoles ;
 
@@ -160,38 +160,33 @@ export class RoleComponent implements OnInit {
 		this.service.post(value)
 			.subscribe( ( res : RESPONSE) => {
 				this.infoBoxShow = false ;
+				this.msg.success('操作成功') ;
 				this.getRoleList() ;
 			})
 	};
 
 	@Before(function($event){
-		const selectKeys = this.treeCom.nzTreeService.getSelectedNodeList() ;
+		const selectKeys = (this as RoleComponent).treeCom.nzTreeService.getSelectedNodeList() ;
 		if(selectKeys.length === 0 )
-			this.msg.warn("注意,创建的该角色未包含任何权限") ;
+			(this as RoleComponent).msg.warn("注意,创建的该角色未包含任何权限") ;
 
 		return new Observable( obsr => {
 			const _arr= [] ;
-
 			selectId(selectKeys , _arr) ;
-
 			obsr.next(_arr);
 		});
 	})
 	@CombineAll()
-	save($event : Event ,  selectdRoles : string[]): void {
+	save($event : Event ,  selectdRoles?: string[]): void {
 		const value = this.form.value ;
 		value['menuIds'] = selectdRoles ;
-
 		const ele = $event.target as HTMLButtonElement ;
-
 		ele.disabled = true  ;
-
 		this.service.put(value)
 			.subscribe( ( res : RESPONSE) => {
 				this.infoBoxShow = false ;
-
 				ele.disabled = false ;
-
+				this.msg.success('操作成功') ;
 				this.getRoleList() ;
 			})
 	};
@@ -209,9 +204,6 @@ const selectId = function(arr : any[] , tar : string[] ){
 	arr.forEach( item => {
 		if( tar.indexOf( item.key.toString() ) == - 1)
 			tar.push(item.key.toString()) ;
-		if(item.children.length > 0 ){
-			selectId(item.children , tar)
-		}
 	});
 };
 let Tree = function(option , selectKeys? ,  parent?){
