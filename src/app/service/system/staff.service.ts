@@ -3,7 +3,7 @@ import { API } from '../API';
 import { HttpClient } from '@angular/common/http';
 import { GET , POST , DELETE , PUT } from '../../../decorators/request.decorator';
 import { MsgService } from '../msg/msg.service';
-import { ENUM } from '../../models';
+import {ENUM, RESPONSE} from '../../models';
 import { Observable } from 'rxjs';
 
 @Injectable({providedIn : 'root'})
@@ -15,19 +15,19 @@ export class StaffService{
 	){}
 
 	@GET(API.system.staff.staff)
-	getList( params : any ): any{}
+	getList( params : any ): Observable< RESPONSE > | any {}
 
 	@PUT(API.system.staff.staff)
-	put(data: object): any{};
+	put(data: object): Observable< RESPONSE > | any {};
 
 	@POST(API.system.staff.staff)
-	post(data: object): any{};
+	post(data: object): Observable< RESPONSE > | any {};
 
 	@DELETE(API.system.staff.staff)
 	delete( data : any ){};
 
-	getStaffById(id:number): any{};
+	getStaffById(id:number): Observable< RESPONSE > | any {};
 
 	@POST(API.system.staff.login  , true , '登录失败 , 原因:')
-	login( data: any): any{} ;
+	login( data: any): Observable< RESPONSE > | any {} ;
 }

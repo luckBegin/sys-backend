@@ -17,7 +17,6 @@ export function GET(url: string, msg: string = '获取数据失败,原因 : '): 
 						filter((res: RESPONSE) => {
 							if ( res.success === false ) {
 								this.msg.error(msg + res.message);
-								obsr.error({ data: res.message }) ;
 							}
 							return res.success === true;
 						}),
@@ -48,7 +47,6 @@ export function POST(url: string, json: boolean = true, msg: string = '提交失
 						filter((res: RESPONSE) => {
 							if ( res.success === false ) {
 								this.msg.error(msg + res.message);
-								obsr.error({ data: res.message }) ;
 							}
 							return res.success === true;
 						}),
@@ -80,7 +78,6 @@ export function PUT(url: string, withId: boolean = false, msg: string = '保存�
 
 							if ( res.success === false ) {
 								this.msg.error(msg + res.message);
-								obsr.error({ data: res.message }) ;
 							}
 							return res.success === true;
 						}),
@@ -104,10 +101,8 @@ export function DELETE(url: string, msg: string = '删除失败,原因 : '): Met
 				this.http.delete(url + '/' + arg[0].id)
 					.pipe(
 						filter((res: RESPONSE) => {
-
 							if ( res.success === false ) {
 								this.msg.error(msg + res.message);
-								obsr.error({ data: res.message }) ;
 							}
 							return res.success === true;
 						}),

@@ -5,7 +5,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import {
   SocialService,
-  SocialOpenType,
   TokenService,
   DA_SERVICE_TOKEN,
 } from '@delon/auth';
@@ -13,8 +12,8 @@ import { ReuseTabService } from '@delon/abc';
 import { StartupService } from '@core/startup/startup.service';
 import { StaffService } from '../../../service/system';
 import { SesssionStorageService } from '../../../service/storage';
-import { Observable } from 'rxjs';
 import { GLOBAL_CONFIG } from '@shared/GLOBAL.config';
+import * as md5 from 'md5' ;
 
 @Component({
 	selector: 'passport-login',
@@ -120,7 +119,7 @@ export class UserLoginComponent implements OnDestroy {
 		// this.getMenu(3) ;
 		// this.loading = !this.loading ;
 		//
-		( <Observable<any>> < any >this.staffSer.login( { username : this.userName.value , password : this.password.value }) )
+		this.staffSer.login( { username : this.userName.value , password : md5(this.password.value)})
 			.subscribe( ( res : any ) => {
 				this.loading = false ;
 				this.ss.set('loginInfo' , res.data.userInfo) ;
@@ -136,7 +135,7 @@ export class UserLoginComponent implements OnDestroy {
 				} , err => {
 				this.msg.error( err ) ;
 				this.loading = false ;
-	});
+			});
 
 	// this.http
 	//   .post('/login/account?_allow_anonymous=true', {
