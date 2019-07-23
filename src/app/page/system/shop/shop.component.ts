@@ -32,7 +32,7 @@ export class ShopComponent implements OnInit{
 		owner : [ null ] ,
 		tel : [ null , [Validators.required ] ] ,
 		address : [ null , [Validators.required ] ] ,
-		icon : [ null , [Validators.required ]] ,
+		icon : [ null ] ,
 		id : [ null ]
 	});
 	ENUM_shopType : ENUM[] ;
@@ -64,10 +64,7 @@ export class ShopComponent implements OnInit{
 				}, fn: (data) => {
 					this.changeStatus( data );
 				},
-			},
-			{ title: '备注', type: 'text', filter: (val) => {
-				return val.remark ? val.remark : "无" ;
-			}},
+			}
 		],
 		data: [],
 		btn: {

@@ -36,7 +36,7 @@ export class ListComponent implements OnInit {
 		shopId: [ null , [Validators.required ] ] ,
 		typeId: [ null , [Validators.required ] ] ,
 		id : [ null ] ,
-		link: [null]
+		link: [ null ]
 	});
 
 	ENUM_shopList: ENUM[] ;
@@ -186,15 +186,16 @@ export class ListComponent implements OnInit {
 			}
 
 			const formData = new FormData();
-
 			const form = this.form.value ;
-
-			console.log(form) ;
 			formData.append('name' , form.name ) ;
-			formData.append('link' , form.link ) ;
 			formData.append('shopId' , form.shopId) ;
 			formData.append('typeId' , form.typeId) ;
-			formData.append('remark' , form.remark) ;
+			
+			if( form.remark)
+				formData.append('remark' , form.remark) ;
+			if( form.link)
+				formData.append('link' , form.link) ;
+			
 			formData.append('time' , DateUtils.getNow(true).toString() ) ;
 			formData.append('file' , file) ;
 			obsr.next( formData ) ;

@@ -142,7 +142,7 @@
 		  </nz-form-item>
 
 		  <nz-form-item class='c-formSec'>
-			  <nz-form-label [nzSm]="6" nzRequired nzFor="icon">
+			  <nz-form-label [nzSm]="6" nzFor="icon">
 				  LOGO
 			  </nz-form-label>
 			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
@@ -155,17 +155,14 @@
 			  </nz-form-control>
 		  </nz-form-item>
 
-		  <!-- TODO add owner column -->
-
 		  <nz-form-item class='c-formSec'>
 			  <nz-form-label [nzSm]="6" nzFor="remark">
-				  备注
+				  简介
 			  </nz-form-label>
 			  <nz-form-control [nzSm]="17" [nzOffset]='1'>
-				  <input nz-input formControlName="remark" id="remark" placeholder="请输入备注">
+				  <textarea nz-input formControlName="remark" id="remark" cols="10" rows="10"></textarea>
 			  </nz-form-control>
 		  </nz-form-item>
-
 	  </form>
   </ng-template>
 
