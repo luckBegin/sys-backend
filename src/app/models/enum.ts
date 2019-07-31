@@ -1,4 +1,4 @@
 export interface ENUM{
   key : string ;
-  value : number | boolean;
-};
+  value : number | boolean | string;
+}

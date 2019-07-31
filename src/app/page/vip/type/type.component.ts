@@ -31,7 +31,6 @@ export class TypeComponent implements OnInit {
 		isTurnover: [ null , [Validators.required ]] ,
 		discount: [ null , [Validators.required ]] ,
 		investToIntegral: [ null , [Validators.required ]] ,
-		purchaseToIntegral: [ null , [Validators.required ]] ,
 		investToAccount: [ null , [Validators.required ]] ,
 		upgrade: [ null , [Validators.required ]] ,
 		upgradeByPurchase: [ null ] ,
@@ -59,7 +58,6 @@ export class TypeComponent implements OnInit {
 			{ title: '卡号前缀' , type: 'text' , reflect: 'prefix'} ,
 			{ title: '折扣率' , type: 'text' , reflect: 'discount'} ,
 			{ title: '充值送积分率' , type: 'text' , reflect: 'investToIntegral'} ,
-			{ title: '消费送积分率' , type: 'text' , reflect: 'purchaseToIntegral'} ,
 			{ title: '充值到账率' , type: 'text' , reflect: 'investToAccount'} ,
 			{ title: '升级策略' , type: 'mark' , filter: val => val.upgrade == '1' ? '消费积分': '充值金额'} ,
 			{ title: '充值累计升级' , type: 'text' , reflect: 'upgradeByPurchase'} ,
@@ -105,6 +103,7 @@ export class TypeComponent implements OnInit {
 				this.tableData.page = size;
 				this.queryModel.currentPage = size;
 			}
+			this.getList()
 		},
 	};
 
@@ -149,7 +148,6 @@ export class TypeComponent implements OnInit {
 		this.infoBoxShow = false ;
 		this.getList() ;
 	};
-
 
 	@Service('service.delete', true, function(){
 		return this.form.value ;

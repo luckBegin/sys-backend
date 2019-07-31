@@ -49,7 +49,7 @@
 					会员类型
 				</nz-form-label>
 				<nz-form-control [nzSm]="17" [nzOffset]='1'>
-					<input nz-input formControlName="name" id="name" placeholder="请输入会员类型">
+					<input nz-input formControlName="name" id="name" placeholder="请输入会员类型名称">
 					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
 					<span>
 						会员类型不能为空
@@ -112,20 +112,6 @@
 					<nz-form-explain *ngIf="form.get('investToIntegral').dirty && form.get('investToIntegral').errors">
 					<span>
 						充值送积分率不能为空
-					</span>
-					</nz-form-explain>
-				</nz-form-control>
-			</nz-form-item>
-
-			<nz-form-item class='c-formSec'>
-				<nz-form-label [nzSm]="6" nzRequired nzFor="purchaseToIntegral">
-					消费积分率
-				</nz-form-label>
-				<nz-form-control [nzSm]="17" [nzOffset]='1'>
-					<input nz-input formControlName="purchaseToIntegral" id="purchaseToIntegral" placeholder="请输入消费送积分率">
-					<nz-form-explain *ngIf="form.get('purchaseToIntegral').dirty && form.get('purchaseToIntegral').errors">
-					<span>
-						消费送积分率不能为空
 					</span>
 					</nz-form-explain>
 				</nz-form-control>

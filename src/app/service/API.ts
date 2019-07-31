@@ -17,7 +17,10 @@ const system = {
 		staff: host + '/system/staff',
 		login: host + '/system/staff/login',
 	},
-	shop: host + '/system/shop',
+	shop: host + '/system/shop' ,
+	config: {
+		list :  host + '/system/config' ,
+	}
 };
 
 const gallery = {

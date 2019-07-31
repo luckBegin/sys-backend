@@ -105,6 +105,7 @@ export class TimeComponent implements OnInit {
 				this.tableData.page = size;
 				this.queryModel.currentPage = size;
 			}
+			this.getList()
 		},
 	};
 	
