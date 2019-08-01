@@ -1,0 +1,134 @@
+<page-header [title]="'会员积分配置'">
+</page-header>
+
+<div class="c-container">
+	<div style="margin-bottom: 20px">
+		<common-search-bar [SearchBarData] = 'searchBarData'>
+		</common-search-bar>
+	</div>
+	<div class="c-flex-row-start">
+		<button nz-button nzType="primary" class="c-button" (click)="new()">
+			新增
+		</button>
+		<div class="c-flex-row-start" style="margin-left: 20px;">
+			<span style="margin-right: 10px">积分策略:</span>
+			<nz-switch (ngModelChange)="configChange('strategy')" [(ngModel)]="integralConstant" nzCheckedChildren="固定数值" nzUnCheckedChildren="百分比"></nz-switch>
+		</div>
+		<div class="c-flex-row-start" style="margin-left: 20px;">
+			<span style="margin-right: 10px">启用:</span>
+			<nz-switch (ngModelChange)="configChange('enable')" [(ngModel)]="integralEnable" nzCheckedChildren="启用" nzUnCheckedChildren="停用"></nz-switch>
+		</div>
+	</div>
+	<common-table [TableData]="tableData">
+	</common-table>
+</div>
+
+<!-- form -->
+<nz-modal [(nzVisible)]="modalShow" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter"
+          (nzOnCancel)="modalShow = false">
+	<ng-template #modalTitle>
+        <span *ngIf='!editMark'>
+          新增
+        </span>
+		<span *ngIf='editMark'>
+		  编辑
+		</span>
+	</ng-template>
+
+	<ng-template #modalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="key">
+					会员类型
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='请选择会员类型' formControlName="key" id="key">
+						<nz-option *ngFor="let item of ENUM_VipType" [nzLabel]="item.key" [nzValue]="item.key"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('key').dirty && form.get('key').errors">
+						<span>
+							会员类型不能为空
+						</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="constant">
+					固定数值
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="constant" id="constant" placeholder="请输入固定数值">
+					<nz-form-explain *ngIf="form.get('constant').dirty && form.get('constant').errors">
+					<span>
+						固定数值不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="percent">
+					百分比
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="percent" id="percent" placeholder="请输入百分比">
+					<nz-form-explain *ngIf="form.get('percent').dirty && form.get('percent').errors">
+					<span>
+						百分比值不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="6" nzRequired nzFor="limit">
+					最低消费
+				</nz-form-label>
+				<nz-form-control [nzSm]="17" [nzOffset]='1'>
+					<input nz-input formControlName="limit" id="limit" placeholder="请输入最低消费">
+					<nz-form-explain *ngIf="form.get('limit').dirty && form.get('limit').errors">
+					<span>
+						最低消费不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+		</form>
+	</ng-template>
+
+	<ng-template #modalFooter>
+		<button nz-button nzType="primary" *ngIf='!editMark' [disabled]="!form.valid" (click)='addOrSave($event)'>
+			确定
+		</button>
+		<button nz-button nzType="primary" *ngIf='editMark' [disabled]="!form.valid" (click)='addOrSave($event)'>
+			保存
+		</button>
+		<button nz-button nzType="default" (click)='modalShow = false'>
+			关闭
+		</button>
+	</ng-template>
+</nz-modal>
+
+<!-- model -->
+<nz-modal [nzVisible]="deleteModal" [nzTitle]="refuseTitle" [nzContent]="refuseContent" [nzFooter]="refuseFooter"
+          (nzOnCancel)="deleteModal = false">
+	<ng-template #refuseTitle>
+		确认删除?
+	</ng-template>
+
+	<ng-template #refuseContent>
+		<div class="c-flex-row-start">
+			<i nz-icon type="info-circle" theme="outline" class="modal-icon icon-error"></i>
+			<p style="margin : 0 ; padding: 0">
+				一旦删除 , 该数据不可恢复
+			</p>
+		</div>
+	</ng-template>
+
+	<ng-template #refuseFooter>
+		<button nz-button nzType="default" (click)="deleteModal = false">取消</button>
+		<button nz-button nzType="primary" (click)="delete($event)">确定</button>
+	</ng-template>
+</nz-modal>
