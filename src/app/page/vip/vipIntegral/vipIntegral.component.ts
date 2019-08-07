@@ -212,7 +212,9 @@ export class VipIntegralComponent implements OnInit{
 				this.getList() ;
 			});
 	}
+	
 	public deleteModal: boolean = false ;
+	
 	public delete( $event: MouseEvent ):void {
 		const value = this.form.value ;
 		const el = $event.target as HTMLButtonElement ;
